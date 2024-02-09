@@ -21,7 +21,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ulong? Length { get; }
 
-        private ZipArchiveEntry entry;
+        private ZipArchiveEntry _Entry;
 
         
 
@@ -31,6 +31,7 @@ namespace GenHTTP.Modules.IO.Zipfile
             Modified = null;
             Length = (ulong)entry.Length;
             ContentType = contentType ?? FlexibleContentType.Get(Name.GuessContentType() ?? Api.Protocol.ContentType.ApplicationForceDownload);
+            _Entry = entry;
         }
 
         public ValueTask<ulong> CalculateChecksumAsync()
@@ -50,12 +51,12 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<Stream> GetContentAsync()
         {
-            return new ValueTask<Stream>(entry.Open());
+            return new ValueTask<Stream>(_Entry.Open());
         }
 
         public async ValueTask WriteAsync(Stream target, uint bufferSize)
         {
-            using var content = entry.Open();
+            using var content = _Entry.Open();
 
             await content.CopyPooledAsync(target, bufferSize).ConfigureAwait(false);
         }
