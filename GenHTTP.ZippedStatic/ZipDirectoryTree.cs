@@ -12,6 +12,7 @@ namespace GenHTTP.Modules.IO.Zipfile
     internal class ZipDirectoryTree: ZipDirectoryContainer, IResourceTree
     {
         List<string> allDirectories = new();
+        public ZipArchive Zip { get; }
         public IEnumerable<string> DirectoryTree
         {
             get { return allDirectories; }
@@ -19,6 +20,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         internal ZipDirectoryTree(ZipArchive zip) : base(new DirectoryInfo(""+Path.DirectorySeparatorChar))
         {
+            Zip = zip;
             BuildTree(zip);
         }
 

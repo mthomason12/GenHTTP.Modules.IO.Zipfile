@@ -1,6 +1,7 @@
 ﻿using GenHTTP.Api.Content.IO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 {
     internal class ZipDirectoryContainer : IResourceContainer
     {
-        protected ZipDirectoryTree Tree { get; }
+        public ZipDirectoryTree Tree { get; }
         protected DirectoryInfo Directory { get; }
         protected bool IsRoot { get; }
 
@@ -35,7 +36,10 @@ namespace GenHTTP.Modules.IO.Zipfile
         {
             foreach (string directory in Tree.DirectoryTree)
             {
-                yield return new ZipDirectoryNode(new DirectoryInfo(Path.Combine(Directory.FullName,directory)), this);
+                if (Directory.FullName == Path.GetDirectoryName(directory))
+                {
+                    yield return new ZipDirectoryNode(new DirectoryInfo(Path.Combine(Directory.FullName, directory)), this);
+                }
             }
         }
 
@@ -43,10 +47,13 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public IEnumerable<IResource> GetResourcesInternal()
         {
-            /*foreach (var file in Directory.EnumerateFiles())
+            foreach(ZipArchiveEntry entry in Tree.Zip.Entries)
             {
-                yield return Resource.FromFile(file).Build();
-            }*/
+                if (Directory.FullName == Path.GetDirectoryName(entry.FullName))
+                {
+                    yield return GetResource(entry);
+                }
+            }
         }
 
         public ValueTask<IResourceNode?> TryGetNodeAsync(string name)
@@ -65,16 +72,21 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<IResource?> TryGetResourceAsync(string name)
         {
-            /*var path = Path.Combine(Directory.FullName, name);
+            string? path = Path.Combine(Directory.FullName, name);
 
-            var file = new FileInfo(path);
+            ZipArchiveEntry? file = Tree.Zip.GetEntry(name);
 
-            if (file.Exists)
+            if (file is not null)
             {
-                return new(Resource.FromFile(file).Build());
+                return GetResource(file);
             }
 
-            return new();*/
+            return new();
+        }
+
+        private ZipFileResource GetResource(ZipArchiveEntry entry)
+        {
+            return new(entry, this);
         }
 
     }

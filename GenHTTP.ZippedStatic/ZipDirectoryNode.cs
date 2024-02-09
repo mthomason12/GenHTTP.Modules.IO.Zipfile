@@ -8,22 +8,16 @@ namespace GenHTTP.Modules.IO.Zipfile
     internal class ZipDirectoryNode : ZipDirectoryContainer, IResourceNode
     {
 
-        #region Get-/Setters
-
         public string Name => Directory.Name;
 
         public IResourceContainer Parent { get; }
 
-        #endregion
 
-        #region Initialization
-
-        internal ZipDirectoryNode(DirectoryInfo directory, IResourceContainer parent) : base(directory)
+        internal ZipDirectoryNode(DirectoryInfo directory, ZipDirectoryContainer parent) : base(directory, parent.Tree)
         {
             Parent = parent;
         }
 
-        #endregion
 
     }
 
