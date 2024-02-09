@@ -13,7 +13,7 @@ namespace GenHTTP.Modules.IO.Zipfile
         public IResourceContainer Parent { get; }
 
 
-        internal ZipDirectoryNode(DirectoryInfo directory, ZipDirectoryContainer parent) : base(directory, parent.Tree)
+        internal ZipDirectoryNode(ZipDirectoryInfo directory, ZipDirectoryContainer parent) : base(directory, parent.Tree)
         {
             Parent = parent;
         }

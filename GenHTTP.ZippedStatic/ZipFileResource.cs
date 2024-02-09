@@ -1,5 +1,7 @@
 ﻿using GenHTTP.Api.Content.IO;
 using GenHTTP.Api.Protocol;
+using GenHTTP.Modules.Basics;
+using GenHTTP.Modules.IO.Streaming;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -23,26 +25,39 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         
 
-        public ZipFileResource(ZipArchiveEntry entry, IResourceContainer container)
+        public ZipFileResource(ZipArchiveEntry entry, string? name, FlexibleContentType? contentType)
         {
-            Name = entry.Name;
+            Name = name ?? entry.Name;
             Modified = null;
             Length = (ulong)entry.Length;
+            ContentType = contentType ?? FlexibleContentType.Get(Name.GuessContentType() ?? Api.Protocol.ContentType.ApplicationForceDownload);
         }
 
         public ValueTask<ulong> CalculateChecksumAsync()
         {
-            throw new NotImplementedException();
+            unchecked
+            {
+                ulong hash = 17;
+
+                var length = Length;
+
+                hash = hash * 23 + (ulong)Modified.GetHashCode();
+                hash = hash * 23 + ((length != null) ? length.Value : 0);
+
+                return new ValueTask<ulong>(hash);
+            }
         }
 
         public ValueTask<Stream> GetContentAsync()
         {
-            return entry.Open();
+            return new ValueTask<Stream>(entry.Open());
         }
 
-        public ValueTask WriteAsync(Stream target, uint bufferSize)
+        public async ValueTask WriteAsync(Stream target, uint bufferSize)
         {
-            throw new NotImplementedException();
+            using var content = entry.Open();
+
+            await content.CopyPooledAsync(target, bufferSize).ConfigureAwait(false);
         }
     }
 }

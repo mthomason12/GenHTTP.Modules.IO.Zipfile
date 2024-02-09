@@ -18,7 +18,7 @@ namespace GenHTTP.Modules.IO.Zipfile
             get { return allDirectories; }
         }
 
-        internal ZipDirectoryTree(ZipArchive zip) : base(new DirectoryInfo(""+Path.DirectorySeparatorChar))
+        internal ZipDirectoryTree(ZipArchive zip) : base(new ZipDirectoryInfo(""+Path.DirectorySeparatorChar))
         {
             Zip = zip;
             BuildTree(zip);
