@@ -1,7 +1,10 @@
-﻿using GenHTTP.Engine;
-using GenHTTP.Modules.IO;
+﻿using GenHTTP.Api.Content.IO;
+using GenHTTP.Api.Infrastructure;
+using GenHTTP.Engine;
+using GenHTTP.Modules.IO.Zipfile;
 using GenHTTP.Modules.Practices;
 using GenHTTP.Modules.StaticWebsites;
+using GenHTTP.Modules.StaticWebsites.Provider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +17,9 @@ namespace ZippedStaticTest
     {
         TestServer() 
         {
-            var content = ResourceTree.FromDirectory("");
+            IBuilder<IResourceTree> content = ResourceTree.FromZip("test.zip");
 
-            var app = StaticWebsite.From(content);
+            StaticWebsiteBuilder? app = StaticWebsite.From(content);
 
             Host.Create()
                 .Console()
