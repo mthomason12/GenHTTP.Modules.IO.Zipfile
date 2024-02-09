@@ -15,15 +15,14 @@ if (File.Exists("testsite.zip"))
 ZipFile.CreateFromDirectory("TestSite", "testsite.zip");
 
 //load resource tree from zip
-IBuilder<IResourceTree> content = ResourceTree.FromZip("test.zip");
+IBuilder<IResourceTree> content = ResourceTree.FromZip("testsite.zip");
 
 StaticWebsiteBuilder? app = StaticWebsite.From(content);
 
-Host.Create()
+IServerHost host = Host.Create()
     .Console()
     .Defaults()
-    .Handler(app)
-    .Run();
-
-Console.WriteLine("Press any key to terminate");
-Console.ReadKey();
+    .Handler(app);
+Console.WriteLine("Running on port 8080");
+Console.WriteLine("Ctrl-C to terminate.");
+host.Run();
