@@ -26,7 +26,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         internal void BuildTree(ZipArchive zip)
         {
-            //get distinct parent folders
+            //get distinct folders
             IEnumerable<string> directories = (from e in zip.Entries
                                               select System.IO.Path.GetDirectoryName(e.FullName)).Distinct();
 
