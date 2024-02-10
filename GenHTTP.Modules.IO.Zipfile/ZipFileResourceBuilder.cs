@@ -12,7 +12,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 {
     public sealed class ZipFileResourceBuilder : IResourceBuilder<ZipFileResourceBuilder>
     {
-        private ZipArchiveEntry _Entry;
+        private ZipArchiveEntry? _Entry;
         private string? _Name;
         private FlexibleContentType? _Type;
 

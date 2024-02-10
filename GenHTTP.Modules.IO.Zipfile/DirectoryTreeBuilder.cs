@@ -8,7 +8,7 @@ namespace GenHTTP.Modules.IO.Zipfile
 {
     public class DirectoryTreeBuilder : IBuilder<IResourceTree>
     {
-        ZipArchive zip;
+        ZipArchive _Zip;
 
         public DirectoryTreeBuilder(Stream stream) 
         {
@@ -21,15 +21,15 @@ namespace GenHTTP.Modules.IO.Zipfile
             Open(stream);
         }
 
-        public void Open(Stream stream)
+        private void Open(Stream stream)
         {
-            zip = new ZipArchive(stream);
+            _Zip = new ZipArchive(stream);
         }
 
         //return a ZipTree
         public IResourceTree Build()
         {
-            return new ZipDirectoryTree(zip);
+            return new ZipDirectoryTree(_Zip);
         }
     }
 }
