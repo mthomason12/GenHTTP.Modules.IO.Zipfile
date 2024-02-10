@@ -52,9 +52,17 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<IResourceNode?> TryGetNodeAsync(string name)
         {
-            var path = Path.Combine(Directory.FullName, name);
+            string path;
+            if (Directory.FullName is not null && (Directory.FullName.Length>0))
+            { 
+                path = Directory.FullName + '/' + name;
+            }
+            else
+            {
+                path = name;
+            }
 
-            var directory = new ZipDirectoryInfo(path);
+            ZipDirectoryInfo directory = new ZipDirectoryInfo(path);
 
             if (Tree.DirectoryTree.Contains(directory.FullName))
             {
@@ -66,7 +74,15 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<IResource?> TryGetResourceAsync(string name)
         {
-            string? path = Directory.FullName+'/'+name;
+            string? path;
+            if (Directory.FullName is not null && (Directory.FullName.Length > 0))
+            {
+                path = Directory.FullName + '/' + name;
+            }
+            else
+            {
+                path = name;
+            }
 
             ZipArchiveEntry? file = Tree.Zip.GetEntry(path);
 

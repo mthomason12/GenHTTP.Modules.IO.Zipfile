@@ -31,17 +31,18 @@ namespace GenHTTP.Modules.IO.Zipfile
                                               select Path.GetDirectoryName(e.FullName)).Distinct();
 
             //add to the list along with any missing links in the tree
-            foreach (var directory in directories)
+            foreach (string directory in directories)
             {
-                allDirectories.Add(directory);
-                string parentDirectory = System.IO.Path.GetDirectoryName(directory);
+                string thisDirectory = directory.Replace('\\', '/');
+                allDirectories.Add(thisDirectory);
+                string parentDirectory = Path.GetDirectoryName(thisDirectory);
                 while (parentDirectory is not null)
                 {
-                    if (!allDirectories.Contains(directory))
+                    if (!allDirectories.Contains(thisDirectory))
                     {
-                        allDirectories.Add(directory); 
+                        allDirectories.Add(thisDirectory); 
                     }
-                    parentDirectory = System.IO.Path.GetDirectoryName(parentDirectory);
+                    parentDirectory = Path.GetDirectoryName(parentDirectory);
                 }
             }
         }
