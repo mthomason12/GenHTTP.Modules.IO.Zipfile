@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZippedStaticTest", "ZippedS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServer", "TestServer\TestServer.csproj", "{BD6E7568-2823-4095-B75A-3D0350F08E42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenHTTP.ZippedStatic", "GenHTTP.ZippedStatic\GenHTTP.ZippedStatic.csproj", "{B31F94C8-41FD-49B8-BCAC-3124D30B9422}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenHTTP.Modules.IO.Zipfile", "GenHTTP.ZippedStatic\GenHTTP.Modules.IO.Zipfile.csproj", "{B31F94C8-41FD-49B8-BCAC-3124D30B9422}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

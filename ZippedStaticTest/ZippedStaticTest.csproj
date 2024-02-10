@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GenHTTP.ZippedStatic\GenHTTP.ZippedStatic.csproj" />
+    <ProjectReference Include="..\GenHTTP.ZippedStatic\GenHTTP.Modules.IO.Zipfile.csproj" />
   </ItemGroup>
 
 </Project>
