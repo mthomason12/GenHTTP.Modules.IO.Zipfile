@@ -28,7 +28,7 @@ namespace GenHTTP.Modules.IO.Zipfile
         {
             //get distinct folders
             IEnumerable<string> directories = (from e in zip.Entries
-                                              select System.IO.Path.GetDirectoryName(e.FullName)).Distinct();
+                                              select Path.GetDirectoryName(e.FullName)).Distinct();
 
             //add to the list along with any missing links in the tree
             foreach (var directory in directories)
