@@ -32,7 +32,7 @@ namespace GenHTTP.Modules.IO.Zipfile
             {
                 if (Directory.FullName == Path.GetDirectoryName(directory))
                 {
-                    yield return new ZipDirectoryNode(new ZipDirectoryInfo(Path.Combine(Directory.FullName, directory)), this);
+                    yield return new ZipDirectoryNode(new ZipDirectoryInfo(Directory.FullName+'/'+directory), this);
                 }
             }
         }
@@ -52,9 +52,17 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<IResourceNode?> TryGetNodeAsync(string name)
         {
-            var path = Path.Combine(Directory.FullName, name);
+            string path;
+            if (Directory.FullName is not null && (Directory.FullName.Length>0))
+            { 
+                path = Directory.FullName + '/' + name;
+            }
+            else
+            {
+                path = name;
+            }
 
-            var directory = new ZipDirectoryInfo(path);
+            ZipDirectoryInfo directory = new ZipDirectoryInfo(path);
 
             if (Tree.DirectoryTree.Contains(directory.FullName))
             {
@@ -66,9 +74,17 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         public ValueTask<IResource?> TryGetResourceAsync(string name)
         {
-            string? path = Path.Combine(Directory.FullName, name);
+            string? path;
+            if (Directory.FullName is not null && (Directory.FullName.Length > 0))
+            {
+                path = Directory.FullName + '/' + name;
+            }
+            else
+            {
+                path = name;
+            }
 
-            ZipArchiveEntry? file = Tree.Zip.GetEntry(name);
+            ZipArchiveEntry? file = Tree.Zip.GetEntry(path);
 
             if (file is not null)
             {

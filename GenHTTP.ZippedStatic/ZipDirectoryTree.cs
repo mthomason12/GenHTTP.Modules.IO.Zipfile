@@ -18,7 +18,7 @@ namespace GenHTTP.Modules.IO.Zipfile
             get { return allDirectories; }
         }
 
-        internal ZipDirectoryTree(ZipArchive zip) : base(new ZipDirectoryInfo(""+Path.DirectorySeparatorChar))
+        internal ZipDirectoryTree(ZipArchive zip) : base(new ZipDirectoryInfo(""))
         {
             Zip = zip;
             BuildTree(zip);
@@ -26,22 +26,23 @@ namespace GenHTTP.Modules.IO.Zipfile
 
         internal void BuildTree(ZipArchive zip)
         {
-            //get distinct parent folders
+            //get distinct folders
             IEnumerable<string> directories = (from e in zip.Entries
-                                              select System.IO.Path.GetDirectoryName(e.FullName)).Distinct();
+                                              select Path.GetDirectoryName(e.FullName)).Distinct();
 
             //add to the list along with any missing links in the tree
-            foreach (var directory in directories)
+            foreach (string directory in directories)
             {
-                allDirectories.Add(directory);
-                string parentDirectory = System.IO.Path.GetDirectoryName(directory);
+                string thisDirectory = directory.Replace('\\', '/');
+                allDirectories.Add(thisDirectory);
+                string parentDirectory = Path.GetDirectoryName(thisDirectory);
                 while (parentDirectory is not null)
                 {
-                    if (!allDirectories.Contains(directory))
+                    if (!allDirectories.Contains(thisDirectory))
                     {
-                        allDirectories.Add(directory); 
+                        allDirectories.Add(thisDirectory); 
                     }
-                    parentDirectory = System.IO.Path.GetDirectoryName(parentDirectory);
+                    parentDirectory = Path.GetDirectoryName(parentDirectory);
                 }
             }
         }

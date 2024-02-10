@@ -20,6 +20,9 @@
     <None Update="TestSite\Folder\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestSite\Folder\Subfolder\file.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestSite\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
