@@ -1,6 +1,3 @@
-GenHTTP.Modules.IO.Zipfile
-==========================
-
 MIT License
 
 Copyright (c) 2024 Matt Thomason
